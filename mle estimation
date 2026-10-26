@@ -1,0 +1,66 @@
+import pandas as pd
+import seaborn as sns
+import numpy as np
+
+_________
+
+df = sns.load_dataset("iris")
+
+df["setosa"] = (df["species"] == "setosa").astype(int)
+
+df = df[["sepal_length", "setosa"]]
+
+df = df.dropna()
+
+df.head()
+
+_________
+
+sigma = df["sepal_length"].std(ddof=0)
+
+print("Estimated Standard Deviation (σ):", sigma)
+
+________
+
+sigma = df["sepal_length"].std(ddof=0)
+
+print("Estimated Standard Deviation (σ):", sigma)
+
+___________
+
+mu = df["sepal_length"].mean()
+print("Normal Distribution Parameters")
+print("Mean (μ):", mu)
+print("Standard Deviation (σ):", sigma)
+
+__________
+
+p = df["setosa"].mean()
+
+print("Estimated Probability (p):", p)
+
+_____________
+
+print("Probability of Setosa :", round(p, 3))
+
+________
+
+print("Probability of Not Setosa :", round(1 - p, 3))
+
+________
+
+import matplotlib.pyplot as plt
+
+counts = df["setosa"].value_counts().sort_index()
+
+plt.bar(["Not Setosa", "Setosa"], counts)
+
+plt.title("Setosa Count")
+
+plt.xlabel("Status")
+
+plt.ylabel("Number of Flowers")
+
+plt.show()
+
+__________
