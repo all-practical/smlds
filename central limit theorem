@@ -1,0 +1,66 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+
+df.head()
+
+  _____
+
+data = df["sepal length (cm)"]
+
+print(data.head())
+
+  ________
+
+plt.figure(figsize=(8, 5))
+
+plt.hist(data, bins=10, edgecolor="black")
+
+plt.title("Original Distribution of Sepal Length")
+plt.xlabel("Sepal Length (cm)")
+plt.ylabel("Frequency")
+
+plt.show()
+
+
+  ______
+
+data = df["sepal length (cm)"]
+sample_means = []
+for i in range(1000):
+    sample = data.sample(n=30, replace=True)
+    sample_means.append(sample.mean())
+    print(sample_means [:10])
+
+data = df["sepal length (cm)"]
+sample_means = []
+for i in range(1000):
+    sample = data.sample(n=30, replace=True)
+    sample_means.append(sample.mean())
+    print(sample_means [:10])
+
+______
+
+print(sample_means [:10])
+
+__________
+
+plt.figure(figsize = (8, 5) )
+plt.hist(sample_means, bins=20, edgecolor="black")
+plt.title("Distribution of Sample Means")
+plt.xlabel("Sample Mean")
+plt.ylabel("Frequency")
+plt.show()
+
+  ___________
+
+print("Population Mean:", data.mean())
+print("Sample Mean:", sum(sample_means) / len(sample_means))
+
+
+  ____________--
