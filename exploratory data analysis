@@ -1,0 +1,83 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.datasets import load_breast_cancer
+breast_cancer = load_breast_cancer()
+df = pd.DataFrame(breast_cancer.data , columns= breast_cancer.feature_names)
+df["diagnosis"] = breast_cancer.target
+df["diagnosis"] = df["diagnosis"].replace({
+    0:"M",
+    1:"B"})
+df.head()
+
+__________
+
+print("Shape of Dataset")
+print(df.shape)
+
+print("\n First Five Rows")
+print(df.head())
+
+print("\nInformation")
+print(df.info())
+
+_________
+
+print("Descriptive Statistics")
+
+desc = df.describe().T
+desc["Variance"] = df.var(numeric_only=True)
+desc["Skewness"] = df.skew(numeric_only=True)
+desc["Kurtosis"] = df.kurt(numeric_only=True)
+
+print(desc)
+
+_________
+
+print("Missing Value")
+print(df.isnull().sum())
+
+__________
+
+print(df["diagnosis"].value_counts())
+
+__________
+
+df.hist(figsize=(16,16))
+plt.show()
+
+_________
+
+plt.figure(figsize=(8,5))
+sns.boxplot(data=df.iloc[:,0:4])
+plt.title("Boxplot")
+plt.show()
+
+__________
+
+plt.figure(figsize=(8,5))
+
+sns.scatterplot(
+    data=df,
+    x="mean radius",
+    y="mean texture",
+    hue="diagnosis"
+)
+
+plt.show()
+
+__________
+
+correlation = df.iloc[:,0:4].corr()
+plt.figure(figsize=(8,6))
+sns.heatmap(correlation, annot=True)
+plt.title("Correlation Matrix")
+plt.show()
+
+__________
+
+sns.pairplot(df, hue="diagnosis")
+plt.show()
+
+__________
