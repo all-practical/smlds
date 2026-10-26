@@ -1,0 +1,62 @@
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+iris = load_iris()
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df["Species"] = iris.target
+df["Species"] = df["Species"].replace({
+    0: "Setosa",
+    1: "Versicolor",
+    2: "Virginica"
+})
+df.head()
+
+_________
+
+print("Shape of Dataset:", df.shape)
+print("\nSpecies Count")
+print(df["Species"].value_counts())
+
+__________
+
+random_sample = df.sample(n=30, random_state=42)
+random_sample
+
+__________
+
+print("Random Sample Shape:", random_sample.shape)
+print(random_sample["Species"].value_counts())
+
+___________
+
+sample, _ = train_test_split(
+    df,
+    test_size=0.80,
+    stratify=df["Species"],
+    random_state=42
+)
+
+sample
+
+____________
+
+print("Stratified Sample Shape:", sample.shape)
+print(sample["Species"].value_counts())
+
+__________
+
+cluster = df[df["Species"] == "Setosa"]
+cluster
+
+__________
+
+print("Cluster Sample Shape:", cluster.shape)
+print(cluster["Species"].value_counts())
+
+___________
+
+print("Original Dataset :", len(df))
+print("Simple Random Sample :", len(random_sample))
+print("Stratified Sample :", len(sample))
+print("Cluster Sample :", len(cluster))
