@@ -1,0 +1,88 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+
+___________
+
+# Load Breast Cancer dataset
+breast_cancer = load_breast_cancer()
+
+# Create DataFrame
+df = pd.DataFrame(
+    breast_cancer.data,
+    columns=breast_cancer.feature_names
+)
+
+# Add target column
+df['target'] = breast_cancer.target
+
+# Convert target values to class names
+df['target'] = df['target'].map({
+    0: 'malignant',
+    1: 'benign'
+})
+
+# Display first 5 rows
+print(df.head())
+
+_____________
+
+# Introduce missing values
+df.loc[5, "mean radius"] = None
+df.loc[20, "mean texture"] = None
+df.loc[100, "mean smoothness"] = None
+
+# Display first 25 rows
+df.head(25)
+
+______________
+
+print(df.isnull().sum())
+
+  __________
+
+df.fillna(df.median(numeric_only=True), inplace=True)
+print(df.isnull().sum())
+
+______________
+
+encoder = LabelEncoder()
+df["target"] = encoder.fit_transform(df["target"])
+df.head()
+
+_____________
+
+scaler = StandardScaler()
+columns = df.columns[:-1]
+df[columns] = scaler.fit_transform(df[columns])
+df.head()
+
+______________
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df.iloc[:, :4])
+
+plt.title("Boxplot for Outlier Detection (Breast Cancer Dataset)")
+plt.xlabel("Features")
+plt.ylabel("Standardized Values")
+
+plt.show()
+
+______________
+
+Q1 = df.iloc[:, :4].quantile(0.25)
+Q3 = df.iloc[:, :4].quantile(0.75)
+IQR = Q3 - Q1
+outliers = ((df.iloc[:, :4] < (Q1 - 1.5 * IQR)) |
+            (df.iloc[:, :4] > (Q3 + 1.5 * IQR)))
+print(outliers.sum())
+
+____________
+
+df.head()
+
+___________
